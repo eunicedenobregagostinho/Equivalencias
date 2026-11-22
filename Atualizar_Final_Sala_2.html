@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Atualizar final — O Espelho das Equivalências</title>
+<style>body{font-family:system-ui,Arial,sans-serif;background:#101636;color:#f4f3fb;max-width:700px;margin:5vh auto;padding:24px}main{padding:30px;background:#1e2850;border:1px solid #bfa150;border-radius:20px}h1{color:#f8d879;font-size:1.65rem}p{line-height:1.55}input{display:block;margin:18px 0;font-size:1rem;max-width:100%}button{padding:13px 25px;border:0;background:#f3cb67;color:#102044;border-radius:15px;font-weight:700;cursor:pointer;font-size:1rem}button:disabled{opacity:.5;cursor:default}#feedback{margin-top:18px;line-height:1.6}.preview{padding:18px;border-radius:13px;border:1px solid #a88c57;margin:20px 0}.preview strong{color:#f8d879}</style></head>
+<body><main><h1>Atualização da Sala 2 — Ecrã final</h1><p>Esta ferramenta funciona no teu computador, sem enviar ficheiros para a Internet. Mantém os três enigmas, as imagens e os efeitos; substitui <strong>apenas</strong> o texto e as indicações do último ecrã.</p>
+<div class="preview"><strong>Parabéns, explorador!</strong><p>Concluíste os três enigmas! Recorda: as frações equivalentes representam a mesma quantidade.</p><p>🔑 Código secreto: <strong>375</strong> — regista-o no teu bloco de notas!</p><p>📚 <strong>Próxima missão:</strong> fecha esta janela (X), regressa à Sala 2 do Genially e clica nos <strong>livros mágicos</strong>. Eles vão conduzir-te ao cadeado da próxima sala!</p></div>
+<label for="file">1. Seleciona o ficheiro HTML original do jogo:</label><input type="file" id="file" accept=".html,text/html">
+<button id="make" disabled>2. Guardar jogo atualizado</button><div id="feedback" role="status"></div>
+<p style="font-size:.87rem;opacity:.82">O ficheiro original não é alterado. Será criada uma nova versão para publicares no Netlify.</p></main>
+<script>
+const input=document.getElementById('file'),btn=document.getElementById('make'),feedback=document.getElementById('feedback');input.addEventListener('change',()=>btn.disabled=!input.files.length);
+const old=`    <div class="banner text">Frações equivalentes representam a <b>mesma quantidade</b>. Obténs uma fração equivalente ao <b>multiplicar ou dividir</b> o numerador e o denominador pelo <b>mesmo número</b> (diferente de zero).</div>
+    <div class="banner text" style="margin-top:.8em;font-size:1.3em;padding:.4em 2.6em">
+      <span class="frac"><span>2</span><span>3</span></span>&nbsp;=&nbsp;<span class="frac"><span>2×4</span><span>3×4</span></span>&nbsp;=&nbsp;<span class="frac"><span>8</span><span>12</span></span>
+    </div>
+    <div class="banner btn" style="margin-top:.9em" onclick="restart()">Jogar outra vez <span class="arrow">↻</span></div>`;
+const replacement=`    <div class="banner text" style="margin-top:.2em">✦ <b>Parabéns, explorador!</b> Concluíste os três enigmas! Recorda: as frações equivalentes representam a <b>mesma quantidade</b>.</div>
+    <div class="banner text" style="margin-top:.75em;font-size:1.22em;padding:.4em 2.6em">🔑 Código secreto: <b>375</b> — regista-o no teu bloco de notas!</div>
+    <div class="banner text" style="margin-top:.75em">📚 <b>Próxima missão:</b> fecha esta janela (X), regressa à <b>Sala 2</b> do Genially e clica nos <b>livros mágicos</b>. Eles vão conduzir-te ao cadeado da próxima sala!</div>
+    <div class="banner btn" style="margin-top:.9em" onclick="restart()">Jogar outra vez <span class="arrow">↻</span></div>`;
+btn.addEventListener('click',async()=>{feedback.textContent='';try{const f=input.files[0];let s=await f.text();if(!s.includes('id="s-end"')||!s.includes('O Espelho das Equivalências'))throw Error('Este ficheiro não corresponde à versão prevista do jogo da Sala 2.');const count=s.split(old).length-1;if(count!==1)throw Error('Não encontrei a versão exata do ecrã final. Nenhum ficheiro foi alterado.');let result=s.replace(old,replacement);const fileName='enigma-fracoes-equivalentes_SALA2_FINAL_CORRIGIDO.html';let url=URL.createObjectURL(new Blob([result],{type:'text/html;charset=utf-8'}));let link=document.createElement('a');link.href=url;link.download=fileName;document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),5000);feedback.textContent='✓ Nova versão guardada! Abre o ficheiro para testar o jogo e, depois, publica-o no Netlify.'}catch(e){feedback.textContent='⚠ '+e.message}});
+</script></body></html>
